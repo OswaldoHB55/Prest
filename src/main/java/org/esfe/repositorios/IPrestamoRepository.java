@@ -1,4 +1,7 @@
 package org.esfe.repositorios;
 
-public interface IPrestamoRepository {
+import org.esfe.modelos.Prestamo;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface IPrestamoRepository extends JpaRepository<Prestamo, Integer> {
 }

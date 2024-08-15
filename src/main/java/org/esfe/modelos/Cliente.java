@@ -3,6 +3,9 @@ package org.esfe.modelos;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Entity
 @Table(name = "clientes")
 public class Cliente {
@@ -21,6 +24,21 @@ public class Cliente {
 
     @NotBlank(message = "la direccion es requerida")
     private String direccion;
+
+    @ManyToMany
+    @JoinTable(
+            name = "prestamo",
+            joinColumns = @JoinColumn(name = "cliente_id")
+    )
+    private Set<Cliente> clientes = new HashSet<>();
+
+    public Set<Cliente> getClientes() {
+        return clientes;
+    }
+
+    public void setClientes(Set<Cliente> clientes) {
+        this.clientes = clientes;
+    }
 
     public Integer getId() {
         return id;
