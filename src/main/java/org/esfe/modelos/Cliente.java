@@ -27,16 +27,6 @@ public class Cliente {
 
 
 
-    private Set<Cliente> clientes = new HashSet<>();
-
-    public Set<Cliente> getClientes() {
-        return clientes;
-    }
-
-    public void setClientes(Set<Cliente> clientes) {
-        this.clientes = clientes;
-    }
-
     public Integer getId() {
         return id;
     }
