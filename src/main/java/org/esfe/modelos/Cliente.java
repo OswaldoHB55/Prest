@@ -3,9 +3,6 @@ package org.esfe.modelos;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 
-import java.util.HashSet;
-import java.util.Set;
-
 @Entity
 @Table(name = "clientes")
 public class Cliente {
@@ -24,8 +21,6 @@ public class Cliente {
 
     @NotBlank(message = "la direccion es requerida")
     private String direccion;
-
-
 
     public Integer getId() {
         return id;

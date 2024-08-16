@@ -20,7 +20,7 @@ import java.util.stream.IntStream;
 
 @Controller
 @RequestMapping("/clientes")
-public class ClienteController {
+public class  ClienteController {
 
     @Autowired
     private IClienteService clienteService;
@@ -43,8 +43,10 @@ public class ClienteController {
     }
     @GetMapping("/create")
     public String create(Cliente cliente){
+
         return "cliente/create";
     }
+
     @PostMapping("/save")
     public String save(Cliente cliente, BindingResult result, Model model, RedirectAttributes attributes){
         if(result.hasErrors()){
