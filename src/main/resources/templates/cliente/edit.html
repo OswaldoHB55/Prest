@@ -6,6 +6,7 @@
 <div layout:fragment="content">
     <h1>Editar Cliente</h1>
     <form th:action="@{/clientes/save}" th:object="${cliente}" method="post">
+        <input type="hidden" th:field="*{id}">
         <div class="row">
             <div class="col-md-6">
                 <div class="form-group">
