@@ -25,11 +25,8 @@ public class Cliente {
     @NotBlank(message = "la direccion es requerida")
     private String direccion;
 
-    @ManyToMany
-    @JoinTable(
-            name = "prestamo",
-            joinColumns = @JoinColumn(name = "cliente_id")
-    )
+
+
     private Set<Cliente> clientes = new HashSet<>();
 
     public Set<Cliente> getClientes() {

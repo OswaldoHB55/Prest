@@ -1,6 +1,8 @@
 package org.esfe.controladores;
 
 
+import org.esfe.modelos.Prestamo;
+import org.esfe.servicios.interfaces.IPrestamoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -27,10 +29,10 @@ public class PrestamoController {
         int pageSize = size.orElse(5); //Tamaño de la pagina, se asigna 5
         Pageable pageable = PageRequest.of(currentPage, pageSize);
 
-        Page<Prestamo> prestamos =prestamoService.buscarTodoPaginados(pageable);
+        Page<Prestamo> prestamos =prestamoService.buscarTodosPaginados(pageable);
         model.addAttribute("prestamos", prestamos);
 
-        int totalPages = pprestamos.getTotalPages();
+        int totalPages = prestamos.getTotalPages();
         if (totalPages > 0){
             List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages).boxed().collect(Collectors.toList());
             model.addAttribute("pageNumbers", pageNumbers);
@@ -49,7 +51,7 @@ public class PrestamoController {
             attributes.addFlashAttribute("error", "No se pudo guardar debeido a un error");
             return "prestamo/create";
         }
-        prestamoService.createOrEditOne(prestamo);
+        prestamoService.createOEditOne(prestamo);
         attributes.addFlashAttribute("msg", "Prestamo creado correctamente");
         return "redirect:/prestamos";
     }
@@ -71,10 +73,6 @@ public class PrestamoController {
         model.addAttribute("prestamo", prestamo);
         return "prestamo/delete";
     }
-    @PostMapping("/delete")
-    public String delete(Prestamo prestamo, RedirectAttributes attributes){
-        prestamoService.eliminarPorId(prestamo.getId());
-        attributes.addFlashAttribute("msg", "Prestamo Eliminado Correctamente");
-        return "redirect:/prestamos";
-    }
+
+
 }

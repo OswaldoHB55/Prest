@@ -1,6 +1,8 @@
 package org.esfe.controladores;
 
 
+import org.esfe.modelos.Cliente;
+import org.esfe.servicios.interfaces.IClienteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -28,7 +30,7 @@ public class ClienteController {
         int pageSize = size.orElse(5); //Tamaño de la pagina, se asigna 5
         Pageable pageable = PageRequest.of(currentPage, pageSize);
 
-        Page<Cliente> clientes = clienteService.buscarTodoPaginados(pageable);
+        Page<Cliente> clientes = clienteService.buscarTodosPaginados(pageable);
         model.addAttribute("clientes", clientes);
 
         int totalPages = clientes.getTotalPages();
@@ -50,7 +52,7 @@ public class ClienteController {
             attributes.addFlashAttribute("error", "No se pudo guardar debeido a un error");
             return "cliente/create";
         }
-        clienteService.createOrEditOne(cliente);
+        clienteService.createOEditOne(cliente);
         attributes.addFlashAttribute("msg", "Cliente creado correctamente");
         return "redirect:/clientes";
     }
