@@ -3,6 +3,10 @@ package org.esfe.modelos;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 @Entity
 @Table(name = "clientes")
 public class Cliente {
@@ -21,6 +25,9 @@ public class Cliente {
 
     @NotBlank(message = "la direccion es requerida")
     private String direccion;
+
+    @OneToMany(mappedBy = "cliente")
+    private List<Prestamo> prestamos;
 
     public Integer getId() {
         return id;
@@ -60,5 +67,13 @@ public class Cliente {
 
     public void setDireccion(@NotBlank(message = "la direccion es requerida") String direccion) {
         this.direccion = direccion;
+    }
+
+    public List<Prestamo> getPrestamos() {
+        return prestamos;
+    }
+
+    public void setPrestamos(List<Prestamo> prestamos) {
+        this.prestamos = prestamos;
     }
 }

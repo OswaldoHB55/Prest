@@ -1,0 +1,81 @@
+<html lang="es"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="/layouts/_mainLayout">
+<div layout:fragment="content">
+
+    <h1>Crear Nuevo Prestamo</h1>
+    <form th:action="@{/prestamos/save}" th:object="${prestamo}" method="post">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="cliente">Cliente</label>
+                    <select id="cliente" name="cliente_id" class="form-control" required>
+                        <option th:each="cliente : ${clientes}" th:value="${cliente.id}" th:text="${cliente.nombre}"></option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="monto">Monto</label>
+                    <input type="text" class="form-control" id="monto" th:field="*{monto}" required>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="interes">Interes</label>
+                    <input type="text" class="form-control" id="interes" th:field="*{interes}" required>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="plazo">Plazo</label>
+                    <input type="text" class="form-control" th:field="*{plazo}" id="plazo" placeholder="Escriba el plazo " required>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="fecha_inicio">Fecha De Inicio</label>
+                    <input type="text" class="form-control" th:field="*{fecha_inicio}" id="fecha_inicio" placeholder="Escriba la fecha de inicio del prestamos" required>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="fecha_final">Ficha de Finalizacion</label>
+                    <input type="text" class="form-control" th:field="*{fecha_final}" id="fecha_final" placeholder="Escriba la fecha final del prestamo" required>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="estado"></label>
+                    <input type="text" class="form-control" th:field="*{estado}" id="estado" placeholder="Escriba el estado " required>
+                </div>
+            </div>
+        </div>
+
+        <hr>
+        <button type="submit" class="btn btn-primary">Guardar</button>
+        <a th:href="@{/prestamos}">Regresar</a>
+
+    </form>
+</div>

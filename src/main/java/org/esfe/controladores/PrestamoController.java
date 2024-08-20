@@ -1,7 +1,9 @@
 package org.esfe.controladores;
 
 
+import org.esfe.modelos.Cliente;
 import org.esfe.modelos.Prestamo;
+import org.esfe.servicios.interfaces.IClienteService;
 import org.esfe.servicios.interfaces.IPrestamoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -23,6 +25,10 @@ import java.util.stream.IntStream;
 public class PrestamoController {
     @Autowired
     private IPrestamoService prestamoService;
+
+    @Autowired
+    private IClienteService clienteService;
+
     @GetMapping
     public String index(Model model, @RequestParam("page") Optional<Integer> page, @RequestParam("size") Optional<Integer> size){
         int currentPage = page.orElse(1) - 1; //Si esta seteando se asigna 0
@@ -41,26 +47,37 @@ public class PrestamoController {
 
     }
     @GetMapping("/create")
-    public String create(Prestamo prestamo){
+    public String create(Prestamo prestamo,  Model model){
+        model.addAttribute("clientes", clienteService.obtenerTodos());
         return "prestamo/create";
     }
+
+
     @PostMapping("/save")
-    public String save(Prestamo prestamo, BindingResult result, Model model, RedirectAttributes attributes){
+    public String save(@RequestParam("cliente_id") Integer cliente, Prestamo prestamo, BindingResult result, Model model, RedirectAttributes attributes){
         if(result.hasErrors()){
             model.addAttribute(prestamo);
+            model.addAttribute("clientes", clienteService.obtenerTodos());
             attributes.addFlashAttribute("error", "No se pudo guardar debeido a un error");
             return "prestamo/create";
         }
+
+        Cliente perfil = new Cliente();
+        perfil.setId(cliente);
+
+        prestamo.setCliente(perfil);
         prestamoService.createOEditOne(prestamo);
         attributes.addFlashAttribute("msg", "Prestamo creado correctamente");
         return "redirect:/prestamos";
     }
+
     @GetMapping("/details/{id}")
     public String details(@PathVariable("id")Integer id, Model model){
         Prestamo prestamo = prestamoService.buscarPorId(id).get();
         model.addAttribute("prestamo", prestamo);
         return "prestamo/details";
     }
+
     @GetMapping("/edit/{id}")
     public String edit(@PathVariable("id")Integer id, Model model) {
         Prestamo prestamo = prestamoService.buscarPorId(id).get();
