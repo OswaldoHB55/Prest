@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="es"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="/layouts/_mainLayout">
+
+<div layout:fragment="content">
+    <h1>Eliminar Préstamo</h1>
+    <h3>¿Está seguro de que desea eliminar este registro?</h3>
+    <div>
+        <hr />
+        <dl class="row">
+            <dt class="col-sm-2">ID</dt>
+            <dd class="col-sm-10" th:text="${prestamo.id}"></dd>
+
+            <dt class="col-sm-2">Cliente</dt>
+            <dd class="col-sm-10" th:text="${prestamo.cliente.nombre}"></dd>
+
+            <dt class="col-sm-2">Monto</dt>
+            <dd class="col-sm-10" th:text="${prestamo.monto}"></dd>
+
+            <dt class="col-sm-2">Interés</dt>
+            <dd class="col-sm-10" th:text="${prestamo.interes}"></dd>
+
+            <dt class="col-sm-2">Plazo</dt>
+            <dd class="col-sm-10" th:text="${prestamo.plazo}"></dd>
+
+            <dt class="col-sm-2">Fecha de Inicio</dt>
+            <dd class="col-sm-10" th:text="${prestamo.fecha_inicio}"></dd>
+
+            <dt class="col-sm-2">Fecha Final</dt>
+            <dd class="col-sm-10" th:text="${prestamo.fecha_final}"></dd>
+
+            <dt class="col-sm-2">Estado</dt>
+            <dd class="col-sm-10" th:text="${prestamo.estado}"></dd>
+        </dl>
+
+        <form th:action="@{/prestamos/delete}" method="post">
+            <input type="hidden" name="id" th:value="${prestamo.id}">
+            <input type="submit" value="Eliminar" class="btn btn-danger"> |
+            <a th:href="@{/prestamos}">Regresar</a>
+        </form>
+
+
+    </div>
+</div>
+</html>

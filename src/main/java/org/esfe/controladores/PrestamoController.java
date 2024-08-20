@@ -81,9 +81,35 @@ public class PrestamoController {
     @GetMapping("/edit/{id}")
     public String edit(@PathVariable("id")Integer id, Model model) {
         Prestamo prestamo = prestamoService.buscarPorId(id).get();
+        model.addAttribute("clientes", clienteService.obtenerTodos());
         model.addAttribute("prestamo", prestamo);
         return "prestamo/edit";
     }
+
+    @PostMapping("/update")
+    public String update(@RequestParam Integer id, @RequestParam Integer clienteId, @RequestParam Integer monto,
+                         @RequestParam Integer interes, @RequestParam String plazo, @RequestParam String fecha_inicio, @RequestParam String fecha_final, @RequestParam String estado, RedirectAttributes attributes) {
+        Prestamo prestamo = prestamoService.buscarPorId(id).get();
+        Cliente cliente = clienteService.buscarPorId(clienteId).get();
+
+        if(cliente != null) {
+            prestamo.setCliente(cliente);
+            prestamo.setMonto(monto);
+            prestamo.setInteres(interes);
+            prestamo.setPlazo(plazo);
+            prestamo.setFecha_inicio(fecha_inicio);
+            prestamo.setFecha_final(fecha_final);
+            prestamo.setEstado(estado);
+
+            prestamoService.createOEditOne(prestamo);
+            attributes.addFlashAttribute("msg", "Préstamo modificado correctamente");
+        } else {
+            attributes.addFlashAttribute("error", "Préstamo o cliente no encontrado");
+        }
+        return "redirect:/prestamos";
+    }
+
+
     @GetMapping("/remove/{id}")
     public String remove(@PathVariable("id")Integer id, Model model) {
         Prestamo prestamo = prestamoService.buscarPorId(id).get();
@@ -91,5 +117,11 @@ public class PrestamoController {
         return "prestamo/delete";
     }
 
+    @PostMapping("/delete")
+    public String delete (Prestamo prestamo, RedirectAttributes attributes){
+        prestamoService.eliminarPorId(prestamo.getId());
+        attributes.addFlashAttribute("msg", "Prestamo eliminado correctamnete");
+        return "redirect:/prestamos";
+    }
 
 }

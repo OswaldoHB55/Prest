@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="es"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="/layouts/_mainLayout">
+
+<div layout:fragment="content">
+    <h1>Editar Préstamo</h1>
+    <div>
+        <form th:action="@{/prestamos/update}" method="post">
+            <input type="hidden" name="id" th:value="${prestamo.id}"/>
+
+            <div class="form-group">
+                <label for="clienteId">Cliente</label>
+                <select id="clienteId" name="clienteId" class="form-control">
+                    <option th:each="cliente : ${clientes}"
+                            th:value="${cliente.id}"
+                            th:text="${cliente.nombre}"
+                            th:selected="${cliente.id == prestamo.cliente.id}"></option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="monto">Monto</label>
+                <input type="number" id="monto" name="monto" class="form-control" th:value="${prestamo.monto}" required/>
+            </div>
+
+            <div class="form-group">
+                <label for="interes">Interés</label>
+                <input type="number" id="interes" name="interes" class="form-control" th:value="${prestamo.interes}" required/>
+            </div>
+
+            <div class="form-group">
+                <label for="plazo">Plazo</label>
+                <input type="text" id="plazo" name="plazo" class="form-control" th:value="${prestamo.plazo}" required/>
+            </div>
+
+            <div class="form-group">
+                <label for="fecha_inicio">Fecha de Inicio</label>
+                <input type="text" id="fecha_inicio" name="fecha_inicio" class="form-control" th:value="${prestamo.fecha_inicio}" required/>
+            </div>
+
+            <div class="form-group">
+                <label for="fecha_final">Fecha Final</label>
+                <input type="text" id="fecha_final" name="fecha_final" class="form-control" th:value="${prestamo.fecha_final}" required/>
+            </div>
+
+            <div class="form-group">
+                <label for="estado">Estado</label>
+                <input type="text" id="estado" name="estado" class="form-control" th:value="${prestamo.estado}" required/>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Actualizar</button>
+        </form>
+        <a th:href="@{/prestamos}" class="btn btn-secondary">Cancelar</a>
+    </div>
+</div>
+</html>
