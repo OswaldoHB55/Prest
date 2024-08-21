@@ -1,0 +1,35 @@
+<html lang="es"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="/layouts/_mainLayout">
+
+<div layout:fragment="content">
+    <h1>Detalles del Pago</h1>
+    <div>
+        <hr />
+        <dl class="row">
+            <dt class="col-sm-2">ID</dt>
+            <dd class="col-sm-10" th:text="${pago.id}"></dd>
+
+            <dt class="col-sm-2">Prestamo</dt>
+            <dd class="col-sm-10" th:text="${pago.prestamo.id}"></dd>
+
+            <dt class="col-sm-2">Monto</dt>
+            <dd class="col-sm-10" th:text="${pago.monto_pago}"></dd>
+
+            <dt class="col-sm-2">Metodo Pago</dt>
+            <dd class="col-sm-10" th:text="${pago.metodo_pago}"></dd>
+
+            <dt class="col-sm-2">Fecha Pago</dt>
+            <dd class="col-sm-10" th:text="${pago.fecha_pago}"></dd>
+
+
+
+            <dt class="col-sm-2">Estado de pago</dt>
+            <dd class="col-sm-10" th:text="${pago.estado_pago}"></dd>
+        </dl>
+        <a th:href="@{/pagos/edit/{id} (id=${pago.id})}" class="btn btn-outline-info">Editar</a> |
+        <a th:href="@{/pagos}">Regresar</a>
+    </div>
+</div>
+</html>

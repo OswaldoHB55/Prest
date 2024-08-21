@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="es"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="/layouts/_mainLayout">
+
+<div layout:fragment="content">
+    <h1>Editar Pago</h1>
+    <div>
+        <form th:action="@{/pagos/update}" method="post">
+            <input type="hidden" name="id" th:value="${pago.id}"/>
+
+            <div class="form-group">
+                <label for="prestamoId">Prestamo</label>
+                <select id="prestamoId" name="prestamoId" class="form-control">
+                    <option th:each="prestamo : ${prestamos}"
+                            th:value="${prestamo.id}"
+
+                            th:selected="${prestamo.id == pago.prestamo.id}"></option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="monto_pago">Monto</label>
+                <input type="number" id="monto_pago" name="monto_pago" class="form-control" th:value="${pago.monto_psgo}" required/>
+            </div>
+
+
+
+            <div class="form-group">
+                <label for="metodo_pago">Metodo de Pago</label>
+                <input type="text" id="metodo_pago" name="metodo_pago" class="form-control" th:value="${pago.metodo_pago}" required/>
+            </div>
+
+            <div class="form-group">
+                <label for="fecha_pago">Fecha de Pago</label>
+                <input type="text" id="fecha_pago" name="fecha_pago" class="form-control" th:value="${pago.fecha_pago}" required/>
+            </div>
+
+
+            <div class="form-group">
+                <label for="estado_pago">Estado</label>
+                <input type="text" id="estado_pago" name="estado_pago" class="form-control" th:value="${pago.estado_pago}" required/>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Actualizar</button>
+        </form>
+        <a th:href="@{/pago}" class="btn btn-secondary">Cancelar</a>
+    </div>
+</div>
+</html>

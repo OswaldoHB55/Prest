@@ -1,0 +1,64 @@
+<html lang="es"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="/layouts/_mainLayout">
+<div layout:fragment="content">
+
+    <h1>Crear Nuevo Pago</h1>
+    <form th:action="@{/pagos/save}" th:object="${pago}" method="post">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="prestamo">Cliente</label>
+                    <select id="prestamo" name="prestamo_id" class="form-control" required>
+                        <option th:each="prestamo : ${prestamos}" th:value="${prestamo.id}"></option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="monto_pago">Monto Pagado</label>
+                    <input type="text" class="form-control" id="monto_pago" th:field="*{monto_pago}" required>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="fecha_pago">Fecha De Pago</label>
+                    <input type="text" class="form-control" th:field="*{fecha_pago}" id="fecha_pago" placeholder="Escriba la fecha de pago del prestamos" required>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="metodo_pago">Metodo de Pago</label>
+                    <input type="text" class="form-control" th:field="*{metodo_pago}" id="metodo_pago" placeholder="Escriba el metodo de pago" required>
+            </div>
+        </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="estado_pago"></label>
+                    <input type="text" class="form-control" th:field="*{estado_pago}" id="estado_pago" placeholder="Escriba el estado " required>
+                </div>
+            </div>
+        </div>
+
+        <hr>
+        <button type="submit" class="btn btn-primary">Guardar</button>
+        <a th:href="@{/pagos}">Regresar</a>
+    </form>
+</div>
