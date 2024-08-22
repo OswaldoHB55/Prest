@@ -38,6 +38,9 @@ public class Prestamo {
     @NotBlank(message = "La fecha final es requerido")
     private String fecha_final;
 
+    @NotBlank(message = "El codigo es requerido")
+    private String codigo;
+
     @NotBlank(message = "El estado es requerido")
     private String estado;
 
@@ -99,6 +102,14 @@ public class Prestamo {
 
     public void setFecha_final(@NotBlank(message = "La fecha final es requerido") String fecha_final) {
         this.fecha_final = fecha_final;
+    }
+
+    public @NotBlank(message = "El codigo es requerido") String getCodigo() {
+        return codigo;
+    }
+
+    public void setCodigo(@NotBlank(message = "El codigo es requerido") String codigo) {
+        this.codigo = codigo;
     }
 
     public @NotBlank(message = "El estado es requerido") String getEstado() {

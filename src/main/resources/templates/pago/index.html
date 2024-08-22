@@ -43,7 +43,7 @@
         <tbody>
         <tr th:each="item : ${pagos}">
             <td th:text="${item.id}"></td>
-            <td th:text="${item.prestamo.nombre}"></td>
+            <td th:text="${item.prestamo.codigo}"></td>
             <td th:text="${item.monto_pago}"></td>
             <td th:text="${item.fecha_pago}"></td>
             <td th:text="${item.metodo_pago}"></td>

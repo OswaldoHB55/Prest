@@ -9,9 +9,9 @@
         <div class="row">
             <div class="col-md-6">
                 <div class="form-group">
-                    <label for="prestamo">Cliente</label>
+                    <label for="prestamo">Prestamo</label>
                     <select id="prestamo" name="prestamo_id" class="form-control" required>
-                        <option th:each="prestamo : ${prestamos}" th:value="${prestamo.id}"></option>
+                        <option th:each="prestamo : ${prestamos}" th:value="${prestamo.id}" th:text="${prestamo.codigo}"></option>
                     </select>
                 </div>
             </div>

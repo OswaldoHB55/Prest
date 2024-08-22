@@ -49,7 +49,7 @@ public class PagoController  {
     }
     @GetMapping("/create")
     public String create(Pago pago,  Model model){
-        model.addAttribute("pagos", pagoService.obtenerTodos());
+        model.addAttribute("prestamos", prestamoService.obtenerTodos());
         return "pago/create";
     }
 
@@ -82,7 +82,7 @@ public class PagoController  {
     @GetMapping("/edit/{id}")
     public String edit(@PathVariable("id")Integer id, Model model) {
         Pago pago = pagoService.buscarPorId(id).get();
-        model.addAttribute("prestamo", prestamoService.obtenerTodos());
+        model.addAttribute("prestamos", prestamoService.obtenerTodos());
         model.addAttribute("pago", pago);
         return "pago/edit";
     }
@@ -112,15 +112,15 @@ public class PagoController  {
 
     @GetMapping("/remove/{id}")
     public String remove(@PathVariable("id")Integer id, Model model) {
-        Prestamo prestamo = prestamoService.buscarPorId(id).get();
-        model.addAttribute("prestamo", prestamo);
-        return "prestamo/delete";
+        Pago pago = pagoService.buscarPorId(id).get();
+        model.addAttribute("pago", pago);
+        return "pago/delete";
     }
 
     @PostMapping("/delete")
-    public String delete (Prestamo prestamo, RedirectAttributes attributes){
-        prestamoService.eliminarPorId(prestamo.getId());
-        attributes.addFlashAttribute("msg", "Prestamo eliminado correctamnete");
-        return "redirect:/prestamos";
+    public String delete (Pago pago, RedirectAttributes attributes){
+        pagoService.eliminarPorId(pago.getId());
+        attributes.addFlashAttribute("msg", "pagos eliminado correctamnete");
+        return "redirect:/pagos";
     }
 }
