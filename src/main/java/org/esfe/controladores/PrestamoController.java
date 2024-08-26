@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -96,8 +97,8 @@ public class PrestamoController {
 
     @PostMapping("/update")
     public String update(@RequestParam Integer id, @RequestParam Integer clienteId, @RequestParam Integer monto,
-                         @RequestParam Integer interes, @RequestParam String plazo, @RequestParam Date fecha_inicio,
-                         @RequestParam Date fecha_final, @RequestParam String estado, RedirectAttributes attributes) {
+                         @RequestParam Integer interes, @RequestParam String plazo, @RequestParam ("fecha_inicio") @DateTimeFormat(pattern = "yyyy-MM-dd") Date fecha_inicio,
+                         @RequestParam ("fecha_final")@DateTimeFormat(pattern = "yyyy-MM-dd") Date fecha_final, @RequestParam String estado, RedirectAttributes attributes) {
         Prestamo prestamo = prestamoService.buscarPorId(id).get();
         Cliente cliente = clienteService.buscarPorId(clienteId).get();
 
