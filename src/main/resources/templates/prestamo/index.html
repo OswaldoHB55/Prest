@@ -5,69 +5,84 @@
 <div layout:fragment="content">
     <!--Mostrar mensaje de confirmacion en caso de exito -->
     <div th:if="${msg != null}">
-        <script>
+        <script th:inline="javascript">
             Swal.fire({
-          title:"Confirmacion",
-            text: '[[${msg}]]',
-            icon: "success"
-        });
+                title: "Confirmación",
+                text: /*[[${msg}]]*/ '',
+                icon: "success"
+            });
         </script>
-
     </div>
     <!--Mostrar mensaje de error en caso de error -->
     <div th:if="${error != null}">
-        <script>
+        <script th:inline="javascript">
             Swal.fire({
-          title:"Error",
-            text: '[[${error}]]',
-            icon: "error"
-        });
+                title: "Error",
+                text: /*[[${error}]]*/ '',
+                icon: "error"
+            });
         </script>
-
     </div>
-    <h1>Listado de prestamos</h1>
-    <a th:href="@{/prestamos/create}" class="btn btn-outline-primary">Nuevo prestamos</a>
-    <table class="table table-striped">
-        <thead>
-        <tr>
 
-            <th>ID</th>
-            <th>Cliente</th>
-            <th>Monto</th>
-            <th>Interes</th>
-            <th>Plazo</th>
-            <th>Fecha de Inicio</th>
-            <th>Fecha de Final</th>
-            <th>Codigo</th>
-            <th>Estado</th>
-            <th>Acciones</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="item : ${prestamos}">
-            <td th:text="${item.id}"></td>
-            <td th:text="${item.cliente.nombre}"></td>
-            <td th:text="${item.monto}"></td>
-            <td th:text="${item.interes}"></td>
-            <td th:text="${item.plazo}"></td>
-            <td th:text="${item.fecha_inicio}"></td>
-            <td th:text="${item.fecha_final}"></td>
-            <td th:text="${item.codigo}"></td>
-            <td th:text="${item.estado}"></td>
+    <h1 class="mb-4">Listado de Préstamos</h1>
 
-            <td>
-                <a th:href="@{/prestamos/details/{id} (id = ${item.id}) }" class="btn btn-outline-secondary">Detalles</a> |
-                <a th:href="@{/prestamos/edit/{id} (id = ${item.id}) }" class="btn btn-outline-info">Editar</a> |
-                <a th:href="@{/prestamos/remove/{id} (id = ${item.id}) }" class="btn btn-outline-danger">Eliminar</a>
-            </td>
-        </tr>
-        </tbody>
-    </table>
-    <nav aria-label="Page navigation example">
-        <ul class="pagination">
-            <li class="page-item" th:each="pageNumber : ${pageNumbers}">
-                <a class="page-link" th:href="@{|/prestamos?page=${pageNumber}|}" th:text="${pageNumber}"></a>
+    <a th:href="@{/prestamos/create}" class="btn btn-primary mb-3">Nuevo Préstamo</a>
+
+    <div class="table-responsive">
+        <table class="table table-striped table-hover">
+            <thead class="thead-dark">
+            <tr>
+                <th>ID</th>
+                <th>Cliente</th>
+                <th>Monto Total</th>
+                <th>Monto Restante</th>
+                <th>Interés</th>
+                <th>Plazo</th>
+                <th>Fecha de Inicio</th>
+                <th>Fecha Final</th>
+                <th>Código</th>
+                <th>Estado</th>
+                <th>Acciones</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="item : ${prestamos}">
+                <td th:text="${item.id}"></td>
+                <td th:text="${item.cliente.nombre}"></td>
+                <td th:text="${#numbers.formatDecimal(item.monto, 1, 'COMMA', 2, 'POINT')}"></td>
+                <td th:text="${#numbers.formatDecimal(item.monto_restante, 1, 'COMMA', 2, 'POINT')}"></td>
+                <td th:text="${item.interes + '%'}"></td>
+                <td th:text="${item.plazo}"></td>
+                <td th:text="${#dates.format(item.fecha_inicio, 'dd/MM/yyyy')}"></td>
+                <td th:text="${#dates.format(item.fecha_final, 'dd/MM/yyyy')}"></td>
+                <td th:text="${item.codigo}"></td>
+                <td>
+                        <span th:class="${item.estado == 'Activo' ? 'badge badge-success' : (item.estado == 'Pendiente' ? 'badge badge-warning' : 'badge badge-secondary')}"
+                              th:text="${item.estado}"></span>
+                </td>
+                <td>
+                    <a th:href="@{/prestamos/details/{id}(id=${item.id})}" class="btn btn-sm btn-outline-secondary">Detalles</a>
+                    <a th:href="@{/prestamos/edit/{id}(id=${item.id})}" class="btn btn-sm btn-outline-info">Editar</a>
+                    <a th:href="@{/prestamos/remove/{id}(id=${item.id})}" class="btn btn-sm btn-outline-danger">Eliminar</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <nav aria-label="Navegación de páginas" th:if="${pageNumbers != null and not #lists.isEmpty(pageNumbers)}">
+        <ul class="pagination justify-content-center">
+            <li class="page-item" th:class="${prestamos.number == 0 ? 'disabled' : ''}">
+                <a class="page-link" th:href="@{/prestamos(page=${prestamos.number})}">&laquo;</a>
+            </li>
+            <li class="page-item" th:each="pageNumber : ${pageNumbers}"
+                th:class="${pageNumber == prestamos.number + 1 ? 'active' : ''}">
+                <a class="page-link" th:href="@{/prestamos(page=${pageNumber})}" th:text="${pageNumber}"></a>
+            </li>
+            <li class="page-item" th:class="${prestamos.number + 1 == prestamos.totalPages ? 'disabled' : ''}">
+                <a class="page-link" th:href="@{/prestamos(page=${prestamos.number + 2})}">&raquo;</a>
             </li>
         </ul>
     </nav>
 </div>
+</html>

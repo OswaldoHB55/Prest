@@ -15,6 +15,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -58,7 +59,7 @@ public class PrestamoController {
         if(result.hasErrors()){
             model.addAttribute(prestamo);
             model.addAttribute("clientes", clienteService.obtenerTodos());
-            attributes.addFlashAttribute("error", "No se pudo guardar debeido a un error");
+            attributes.addFlashAttribute("error", "No se pudo guardar debido a un error");
             return "prestamo/create";
         }
 
@@ -66,8 +67,15 @@ public class PrestamoController {
         perfil.setId(cliente);
 
         prestamo.setCliente(perfil);
+
+        // Inicializar monto_restante con el monto total del préstamo
+        prestamo.setMonto_restante(prestamo.getMonto());
+
+        // Establecer el estado inicial del préstamo
+        prestamo.setEstado("Activo");
+
         prestamoService.createOEditOne(prestamo);
-        attributes.addFlashAttribute("msg", "Prestamo creado correctamente");
+        attributes.addFlashAttribute("msg", "Préstamo creado correctamente");
         return "redirect:/prestamos";
     }
 
@@ -88,7 +96,8 @@ public class PrestamoController {
 
     @PostMapping("/update")
     public String update(@RequestParam Integer id, @RequestParam Integer clienteId, @RequestParam Integer monto,
-                         @RequestParam Integer interes, @RequestParam String plazo, @RequestParam String fecha_inicio, @RequestParam String fecha_final, @RequestParam String estado, RedirectAttributes attributes) {
+                         @RequestParam Integer interes, @RequestParam String plazo, @RequestParam Date fecha_inicio,
+                         @RequestParam Date fecha_final, @RequestParam String estado, RedirectAttributes attributes) {
         Prestamo prestamo = prestamoService.buscarPorId(id).get();
         Cliente cliente = clienteService.buscarPorId(clienteId).get();
 
@@ -100,6 +109,18 @@ public class PrestamoController {
             prestamo.setFecha_inicio(fecha_inicio);
             prestamo.setFecha_final(fecha_final);
             prestamo.setEstado(estado);
+
+            // Actualizar monto_restante solo si el préstamo está en estado "Activo"
+            if (estado.equals("Activo")) {
+                // Si el monto cambia, ajustar el monto_restante proporcionalmente
+                if (prestamo.getMonto() != monto) {
+                    double proporcion = (double) monto / prestamo.getMonto();
+                    int nuevoMontoRestante = (int) (prestamo.getMonto_restante() * proporcion);
+                    prestamo.setMonto_restante(nuevoMontoRestante);
+                }
+            } else if (estado.equals("Pagado")) {
+                prestamo.setMonto_restante(0);
+            }
 
             prestamoService.createOEditOne(prestamo);
             attributes.addFlashAttribute("msg", "Préstamo modificado correctamente");

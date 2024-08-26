@@ -4,13 +4,14 @@
       layout:decorate="/layouts/_mainLayout">
 <div layout:fragment="content">
 
-    <h1>Crear Nuevo Prestamo</h1>
+    <h1>Crear Nuevo Préstamo</h1>
     <form th:action="@{/prestamos/save}" th:object="${prestamo}" method="post">
         <div class="row">
             <div class="col-md-6">
                 <div class="form-group">
                     <label for="cliente">Cliente</label>
                     <select id="cliente" name="cliente_id" class="form-control" required>
+                        <option value="">Seleccione un cliente</option>
                         <option th:each="cliente : ${clientes}" th:value="${cliente.id}" th:text="${cliente.nombre}"></option>
                     </select>
                 </div>
@@ -21,7 +22,7 @@
             <div class="col-md-6">
                 <div class="form-group">
                     <label for="monto">Monto</label>
-                    <input type="text" class="form-control" id="monto" th:field="*{monto}" required>
+                    <input type="number" class="form-control" id="monto" th:field="*{monto}" required min="1">
                 </div>
             </div>
         </div>
@@ -29,8 +30,8 @@
         <div class="row">
             <div class="col-md-6">
                 <div class="form-group">
-                    <label for="interes">Interes</label>
-                    <input type="text" class="form-control" id="interes" th:field="*{interes}" required>
+                    <label for="interes">Interés (%)</label>
+                    <input type="number" class="form-control" id="interes" th:field="*{interes}" required min="0" max="100">
                 </div>
             </div>
         </div>
@@ -39,7 +40,7 @@
             <div class="col-md-6">
                 <div class="form-group">
                     <label for="plazo">Plazo</label>
-                    <input type="text" class="form-control" th:field="*{plazo}" id="plazo" placeholder="Escriba el plazo " required>
+                    <input type="text" class="form-control" th:field="*{plazo}" id="plazo" placeholder="Ej: 12 meses" required>
                 </div>
             </div>
         </div>
@@ -47,43 +48,59 @@
         <div class="row">
             <div class="col-md-6">
                 <div class="form-group">
-                    <label for="fecha_inicio">Fecha De Inicio</label>
-                    <input type="text" class="form-control" th:field="*{fecha_inicio}" id="fecha_inicio" placeholder="Escriba la fecha de inicio del prestamos" required>
-
+                    <label for="fecha_inicio">Fecha de Inicio</label>
+                    <input type="text" class="form-control" th:field="*{fecha_inicio}" id="fecha_inicio" required>
                 </div>
-
             </div>
-
         </div>
 
         <div class="row">
             <div class="col-md-6">
                 <div class="form-group">
-                    <label for="fecha_final">Ficha de Finalizacion</label>
-                    <input type="text" class="form-control" th:field="*{fecha_final}" id="fecha_final" placeholder="Escriba la fecha final del prestamo" required>
+                    <label for="fecha_final">Fecha de Finalización</label>
+                    <input type="text" class="form-control" th:field="*{fecha_final}" id="fecha_final" required>
                 </div>
             </div>
         </div>
+
         <div class="row">
             <div class="col-md-6">
                 <div class="form-group">
-                    <label for="codigo">Codigo</label>
-                    <input type="text" class="form-control" th:field="*{codigo}" id="codigo" placeholder="Codigo" required>
+                    <label for="codigo">Código</label>
+                    <input type="text" class="form-control" th:field="*{codigo}" id="codigo" placeholder="Código del préstamo" required>
                 </div>
             </div>
         </div>
+
         <div class="row">
             <div class="col-md-6">
                 <div class="form-group">
-                    <label for="estado"></label>
-                    <input type="text" class="form-control" th:field="*{estado}" id="estado" placeholder="Escriba el estado " required>
+                    <label for="estado">Estado</label>
+                    <select class="form-control" th:field="*{estado}" id="estado" required>
+                        <option value="Activo">Activo</option>
+                        <option value="Pendiente">Pendiente</option>
+                        <option value="Pagado">Pagado</option>
+                    </select>
                 </div>
             </div>
         </div>
+
+        <input type="hidden" th:field="*{monto_restante}">
 
         <hr>
         <button type="submit" class="btn btn-primary">Guardar</button>
-        <a th:href="@{/prestamos}">Regresar</a>
+        <a th:href="@{/prestamos}" class="btn btn-secondary">Regresar</a>
 
     </form>
 </div>
+
+<!--<script th:inline="javascript">
+    document.addEventListener('DOMContentLoaded', function() {
+        var montoInput = document.getElementById('monto');
+        var montoRestanteInput = document.querySelector('input[name="monto_restante"]');
+
+        montoInput.addEventListener('input', function() {
+            montoRestanteInput.value = this.value;
+        });
+    });
+</script>-->

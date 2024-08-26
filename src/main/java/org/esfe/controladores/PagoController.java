@@ -1,5 +1,6 @@
 package org.esfe.controladores;
 
+import jakarta.transaction.Transactional;
 import org.esfe.modelos.Cliente;
 import org.esfe.modelos.Pago;
 import org.esfe.modelos.Prestamo;
@@ -55,20 +56,49 @@ public class PagoController  {
 
 
     @PostMapping("/save")
-    public String save(@RequestParam("prestamo_id") Integer prestamo, Pago pago, BindingResult result, Model model, RedirectAttributes attributes){
-        if(result.hasErrors()){
-            model.addAttribute(prestamo);
+    @Transactional
+    public String save(@RequestParam("prestamo_id") Integer prestamo_id, Pago pago, BindingResult result, Model model, RedirectAttributes attributes) {
+        if (result.hasErrors()) {
             model.addAttribute("prestamos", prestamoService.obtenerTodos());
-            attributes.addFlashAttribute("error", "No se pudo guardar debeido a un error");
+            attributes.addFlashAttribute("error", "No se pudo guardar debido a un error");
             return "pago/create";
         }
 
-        Prestamo perfil = new Prestamo();
-        perfil.setId(prestamo);
+        Optional<Prestamo> prestamoOptional = prestamoService.buscarPorId(prestamo_id);
+        if (!prestamoOptional.isPresent()) {
+            attributes.addFlashAttribute("error", "El préstamo especificado no existe");
+            return "redirect:/pagos";
+        }
 
-        pago.setPrestamo(perfil);
+        Prestamo prestamo = prestamoOptional.get();
+
+        // Si es el primer pago, inicializar monto_restante con el monto total
+        if (prestamo.getMonto_restante() == 0) {
+            prestamo.setMonto_restante(prestamo.getMonto());
+        }
+
+        // Verificar si el pago no excede el monto restante del préstamo
+        if (pago.getMonto_pago() > prestamo.getMonto_restante()) {
+            attributes.addFlashAttribute("error", "El monto del pago excede el monto restante del préstamo");
+            return "redirect:/pagos/create";
+        }
+
+        // Actualizar el monto restante del préstamo
+        prestamo.setMonto_restante(prestamo.getMonto_restante() - pago.getMonto_pago());
+
+        // Actualizar el estado del préstamo si se ha pagado completamente
+        if (prestamo.getMonto_restante() == 0) {
+            prestamo.setEstado("Pagado");
+        }
+
+        // Guardar el préstamo actualizado
+        prestamoService.createOEditOne(prestamo);
+
+        // Asignar el préstamo al pago y guardar el pago
+        pago.setPrestamo(prestamo);
         pagoService.createOEditOne(pago);
-        attributes.addFlashAttribute("msg", "Pago creado correctamente");
+
+        attributes.addFlashAttribute("msg", "Pago creado correctamente y monto del préstamo actualizado");
         return "redirect:/pagos";
     }
 
