@@ -19,6 +19,26 @@ public class Usuario {
 
     @NotBlank(message = "La contraseña es requerida")
     private String clave;
+    @NotBlank(message = "El correo es requerida")
+    private String email;
+    @NotBlank(message = "")
+    private String token;
+
+    public @NotBlank(message = "") String getToken() {
+        return token;
+    }
+
+    public void setToken(@NotBlank(message = "") String token) {
+        this.token = token;
+    }
+
+    public @NotBlank(message = "El correo es requerida") String getEmail() {
+        return email;
+    }
+
+    public void setEmail(@NotBlank(message = "El correo es requerida") String email) {
+        this.email = email;
+    }
 
     private int status;
 

@@ -24,5 +24,10 @@ public class HomeController {
         logoutHandler.logout(request, null, null);
         return "redirect:/";
     }
+
+    @GetMapping("/recuperacion")
+    public String recuperacion(){
+        return "home/recuperacion";
+    }
 }
 
