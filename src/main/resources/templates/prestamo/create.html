@@ -2,7 +2,119 @@
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="/layouts/_mainLayout">
+
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="/layouts/_mainLayout">
+
+
+
+<head>
+    <style>
+        /*Ya no mover nada de aqui*/
+        body {
+            background: linear-gradient(120deg, #84fab0 0%, #8fd3f4 100%);
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            background:  linear-gradient(120deg, #84fab0 0%, #8fd3f4 100%);
+            padding: 50px;
+            border-radius: 20px;
+            box-shadow: 0 15px 25px rgba(0, 0, 0, 0.3);
+            max-width: 300px;
+            width: 50%;
+            text-align: center;
+            animation: slideIn 1s ease-in-out;
+        }
+        @keyframes slideIn {
+            from { transform: translateY(50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        h1 {
+            color: #1a237e;
+            margin-bottom: 20px;
+            font-size: 32px;
+            font-weight: 700;
+        }
+        p {
+            font-size: 18px;
+            color: #333;
+            margin-bottom: 30px;
+        }
+        .btn {
+             margin-top: 20px;
+            font-size: 16px;
+            padding: 15px 30px;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+        .btn-primary {
+            background-color: #3949ab;
+            border: none;
+            color: white;
+        }
+        .btn-primary:hover {
+            background-color: #303f9f;
+            transform: scale(1.05);
+        }
+        .btn-secondary {
+            background-color: transparent;
+            border: 2px solid #3949ab;
+            color: #3949ab;
+        }
+        .btn-secondary:hover {
+            background-color: #3949ab;
+            color: white;
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+
 <div layout:fragment="content">
+    <h1>Crear nuevo usuario</h1>
+    <form th:action="@{/usuarios/save}" th:object="${usuario}" method="post">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="rol">Rol</label>
+                    <select id="rol" name="rol" class="form-control" required>
+                        <option th:each="rol : ${roles}" th:value="${rol.id}" th:text="${rol.nombre}"></option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="login">Login</label>
+                    <input type="text" class="form-control" id="login" th:field="*{login}" required>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="clave">Clave</label>
+                    <input type="password" class="form-control" id="clave" th:field="*{clave}" required>
+                </div>
+            </div>
+        </div>
+        <hr>
+        <button type="submit" class="btn btn-primary">Guardar</button> |
+        <a th:href="@{/usuarios}">Regresar</a>
+    </form>
+</div>
+<div layout:fragment="content">
+
 
     <h1>Crear Nuevo Préstamo</h1>
     <form th:action="@{/prestamos/save}" th:object="${prestamo}" method="post">
@@ -88,8 +200,9 @@
         <input type="hidden" th:field="*{monto_restante}">
 
         <hr>
+
         <button type="submit" class="btn btn-primary">Guardar</button>
-        <a th:href="@{/prestamos}" class="btn btn-secondary">Regresar</a>
+        <a th:href="@{/prestamos}" class="btn btn-secondary">Cancelar</a>
 
     </form>
 </div>

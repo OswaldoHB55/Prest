@@ -11,8 +11,8 @@
             font-family: 'Poppins', sans-serif;
             margin: 0;
             padding: 0;
-            display: flex;
-            justify-content: center;
+
+
             align-items: center;
             height: 100vh;
         }
@@ -98,8 +98,8 @@
             <dt class="col-sm-2">Estado de pago</dt>
             <dd class="col-sm-10" th:text="${pago.estado_pago}"></dd>
         </dl>
-        <a th:href="@{/pagos/edit/{id} (id=${pago.id})}" class="btn btn-outline-info">Editar</a> |
-        <a th:href="@{/pagos}">Regresar</a>
+        <a th:href="@{/pagos/edit/{id}(id=${pago.id})}" class="btn btn-primary">Editar</a> |
+        <a th:href="@{/pagos}" class="btn btn-secondary">Regresar</a>
     </div>
 </div>
 </html>

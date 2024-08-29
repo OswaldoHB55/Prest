@@ -46,4 +46,5 @@ public class DatabaseWebSecurity {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
+
 }

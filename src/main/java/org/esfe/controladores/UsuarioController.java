@@ -36,8 +36,6 @@ public class UsuarioController {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
-
-
     @GetMapping
     public String index(Model model, @RequestParam("page") Optional<Integer> page, @RequestParam("size") Optional<Integer> size) {
         int currentPage = page.orElse(1) - 1;
@@ -152,4 +150,5 @@ public class UsuarioController {
         attributes.addFlashAttribute("msg", "Usuario eliminado correctamente");
         return "redirect:/usuarios";
     }
+
 }

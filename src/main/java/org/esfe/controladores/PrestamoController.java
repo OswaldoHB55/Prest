@@ -31,6 +31,7 @@ public class PrestamoController {
     @Autowired
     private IClienteService clienteService;
 
+
     @GetMapping
     public String index(Model model, @RequestParam("page") Optional<Integer> page, @RequestParam("size") Optional<Integer> size){
         int currentPage = page.orElse(1) - 1; //Si esta seteando se asigna 0
