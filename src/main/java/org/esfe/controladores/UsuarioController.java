@@ -76,7 +76,7 @@ public class UsuarioController {
         perfil.setId(rol);
 
         usuario.setStatus(1);
-
+        usuario.agregar(perfil);
         usuario.setClave(password);
         usuarioService.crearOEditar(usuario);
         attributes.addFlashAttribute("msg", "Usuario creado correctamente");

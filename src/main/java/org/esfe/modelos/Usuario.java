@@ -3,6 +3,7 @@ package org.esfe.modelos;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -19,27 +20,8 @@ public class Usuario {
 
     @NotBlank(message = "La contraseña es requerida")
     private String clave;
-    @NotBlank(message = "El correo es requerida")
-    private String email;
-    @NotBlank(message = "")
-    private String token;
 
-    public @NotBlank(message = "") String getToken() {
-        return token;
-    }
-
-    public void setToken(@NotBlank(message = "") String token) {
-        this.token = token;
-    }
-
-    public @NotBlank(message = "El correo es requerida") String getEmail() {
-        return email;
-    }
-
-    public void setEmail(@NotBlank(message = "El correo es requerida") String email) {
-        this.email = email;
-    }
-
+    @NotNull(message = "El correo es requerida")
     private int status;
 
     @ManyToMany(fetch = FetchType.EAGER)
@@ -72,11 +54,12 @@ public class Usuario {
         this.clave = clave;
     }
 
+    @NotNull(message = "El correo es requerida")
     public int getStatus() {
         return status;
     }
 
-    public void setStatus(int status) {
+    public void setStatus(@NotNull(message = "El correo es requerida") int status) {
         this.status = status;
     }
 
@@ -86,6 +69,13 @@ public class Usuario {
 
     public void setRoles(List<Rol> roles) {
         this.roles = roles;
+    }
+
+    public  void agregar(Rol tempRol){
+        if (roles==null){
+            roles = new LinkedList<>();
+        }
+        roles.add(tempRol);
     }
 
 }
